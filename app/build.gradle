@@ -2,9 +2,17 @@ plugins {
     id 'com.android.application'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     namespace 'com.pg.documentuploader'
     compileSdk 33
+
+
+    buildFeatures {
+        buildConfig true
+    }
 
     defaultConfig {
         applicationId "com.pg.documentuploader"
@@ -12,7 +20,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        buildConfigField("String","AUTH_KEY_SIMPLIFII", localProperties['auth.simpifii'])
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
