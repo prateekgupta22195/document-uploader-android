@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Document Uploader</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="home_fragment_label">Document Uploader</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="share">Share</string>
+    <string name="previous">Previous</string>
+    <string name="home_content">Press Floating action button to upload and share file.</string>
+    <string name="google_client_id">745299109296-c334dbfpfgf3fa9nms8nr2uf2195jr7m.apps.googleusercontent.com</string>
+    <string name="file_is_being_uploaded_please_wait">File is being uploaded, please wait…</string>
+
+</resources>
