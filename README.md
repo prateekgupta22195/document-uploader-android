@@ -1,6 +1,6 @@
 # Document uploader android
 
-Application to upload document on cloud and share link to anyone. Currently cloud being used is Google Drive.
+Application to upload document on cloud and share link to anyone. Currently cloud being used is provided by a commpany but you can use GoogleDriveUploader as well.
 
 
 ## Technologies:
