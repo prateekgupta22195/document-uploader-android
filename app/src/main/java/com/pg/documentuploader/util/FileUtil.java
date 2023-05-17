@@ -20,7 +20,6 @@ public class FileUtil {
     public static String copyFileToLocalDirectory(Context context, Uri uri, String fileName) {
         String destinationDirectory = context.getFilesDir().getAbsolutePath();
 
-
         DocumentFile documentFile = DocumentFile.fromSingleUri(context, uri);
 
         if (documentFile != null && documentFile.exists()) {

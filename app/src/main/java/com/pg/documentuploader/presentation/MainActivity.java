@@ -23,9 +23,9 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.google.android.gms.auth.GoogleAuthException;
+import com.pg.documentuploader.R;
 import com.pg.documentuploader.app.callbacks.ActivityResultCallback;
 import com.pg.documentuploader.app.callbacks.PermissionResultCallback;
-import com.pg.documentuploader.R;
 import com.pg.documentuploader.databinding.ActivityMainBinding;
 import com.pg.documentuploader.util.DialogUtil;
 
@@ -62,13 +62,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
-//         Setting up fab click listener
         setFabClickListener();
 
-//        registering uploading permission launcher
         registerFileUploadingPermissionResult(this::openDocumentPicker);
 
-//        registering document picker launcher
         registerDocumentPickerLauncher(uri -> {
             try {
                 handleSelectedDocument(uri);
@@ -79,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /* registering document picker launcher */
     private void registerDocumentPickerLauncher(ActivityResultCallback callback) {
         documentPickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -90,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * registering uploading permission launcher
+     */
     private void registerFileUploadingPermissionResult(PermissionResultCallback callback) {
         googleSigninLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
         googleSigninLauncher.launch(mainViewModel.getPermissionIntent(getBaseContext()));
     }
 
+
+    /**
+     * Setting up fab click listener
+     */
     private void setFabClickListener() {
         binding.fab.setOnClickListener(view -> {
             if (mainViewModel.isUploadingPermissionGranted(getBaseContext())) openDocumentPicker();
@@ -110,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Launch activity so that, file with only mentioned mimeTypes files can be selected.
+     */
     private void openDocumentPicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -126,12 +133,22 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
-
+    /**
+     * It will start the worker and set observer on the worker to update UI.
+     *
+     * @param documentUri: will be sent to worker, so that it will get to know which file will be uploaded.
+     */
     private void handleSelectedDocument(Uri documentUri) throws GoogleAuthException, IOException {
         UUID workID = mainViewModel.handleSelectedDocument(documentUri, getBaseContext());
         observerWorkersWithUUID(workID);
     }
 
+
+    /**
+     * It will observe the progress of the worker which is uploading the file.
+     *
+     * @param uuid: used to observe worker with the uuid.
+     */
     private void observerWorkersWithUUID(UUID uuid) {
         LiveData<WorkInfo> workInfoLiveData = WorkManager.getInstance(this).getWorkInfoByIdLiveData(uuid);
         AlertDialog loadingDialog = DialogUtil.showProgressDialog(MainActivity.this);
