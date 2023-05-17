@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         setFabClickListener();
 
-        registerFileUploadingPermissionResult(this::openDocumentPicker);
-
         registerDocumentPickerLauncher(uri -> {
             try {
                 handleSelectedDocument(uri);
@@ -89,29 +87,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * registering uploading permission launcher
-     */
-    private void registerFileUploadingPermissionResult(PermissionResultCallback callback) {
-        googleSigninLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                callback.onPermissionGranted();
-                Toast.makeText(getBaseContext(), "Uploading Permission Granted", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void requestFileUploadingPermission() {
-        googleSigninLauncher.launch(mainViewModel.getPermissionIntent(getBaseContext()));
-    }
-
-
-    /**
      * Setting up fab click listener
      */
     private void setFabClickListener() {
         binding.fab.setOnClickListener(view -> {
-            if (mainViewModel.isUploadingPermissionGranted(getBaseContext())) openDocumentPicker();
-            else requestFileUploadingPermission();
+            openDocumentPicker();
         });
     }
 

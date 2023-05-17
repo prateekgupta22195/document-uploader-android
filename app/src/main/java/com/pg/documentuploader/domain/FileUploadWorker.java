@@ -11,7 +11,7 @@ import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.pg.documentuploader.data.GoogleDriveUploader;
+import com.pg.documentuploader.data.uploader.SimplifiiUploader;
 import com.pg.documentuploader.util.FileUtil;
 
 /**
@@ -19,9 +19,10 @@ import com.pg.documentuploader.util.FileUtil;
  */
 public class FileUploadWorker extends Worker {
 
-    RemoteUploader remoteUploader = GoogleDriveUploader.getInstance();
+    RemoteUploader remoteUploader = SimplifiiUploader.getInstance();
 
     public FileUploadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+
         super(context, workerParams);
     }
 
