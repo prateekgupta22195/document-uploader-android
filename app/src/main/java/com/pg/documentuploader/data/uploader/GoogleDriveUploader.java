@@ -20,7 +20,6 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.Scope;
 import com.pg.documentuploader.data.remote.DriveAPIService;
 import com.pg.documentuploader.domain.AuthenticatedRemoteUploader;
-import com.pg.documentuploader.domain.UploaderPermission;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,15 +36,13 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 
-public class GoogleDriveUploader implements AuthenticatedRemoteUploader, UploaderPermission {
-    private final GoogleSignInOptions gso =
-            new GoogleSignInOptions.Builder(
-                    GoogleSignInOptions.DEFAULT_SIGN_IN
-            ).requestEmail().requestScopes(new Scope(Scopes.DRIVE_FILE)).build();
+public class GoogleDriveUploader implements AuthenticatedRemoteUploader {
+    private final GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestScopes(new Scope(Scopes.DRIVE_FILE)).build();
 
     private static final GoogleDriveUploader INSTANCE;
 
-    private GoogleDriveUploader() {}
+    private GoogleDriveUploader() {
+    }
 
     static {
         try {
@@ -82,6 +79,7 @@ public class GoogleDriveUploader implements AuthenticatedRemoteUploader, Uploade
             return ListenableWorker.Result.failure(output);
         }
     }
+
     private String _uploadFile(String filePath, Context context) throws GoogleAuthException, IOException, JSONException, IllegalStateException {
         File file = new File(Objects.requireNonNull(filePath));
         MediaType type = MediaType.get(getMimeType(filePath));
